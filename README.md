@@ -5,9 +5,11 @@ A command line app for downloading Huggingface repositories with Rust.
   <img src="logo.jpg" alt="RustyFace Logo" width="200"/>
 </p>
 
-[![Crates.io](https://img.shields.io/crates/v/rustyface.svg)](https://crates.io/crates/rustyface)
-[![Documentation](https://docs.rs/rustyface/badge.svg)](https://docs.rs/rustyface)
-[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
+<p align="center">
+	[![Crates.io](https://img.shields.io/crates/v/rustyface.svg)](https://crates.io/crates/rustyface)
+	[![Documentation](https://docs.rs/rustyface/badge.svg)](https://docs.rs/rustyface)
+	[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
+</p>
 
 # Why using this?
 RustyFace does not require installing additional dependencies such as `git` or `git lfs` etc. It aims to be lightweight and portable. 
