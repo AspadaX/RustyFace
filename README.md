@@ -1,6 +1,10 @@
 # RustyFace
 A command line app for downloading Huggingface repositories with Rust. 
 
+[![Crates.io](https://img.shields.io/crates/v/rustyface.svg)](https://crates.io/crates/rustyface)
+[![Documentation](https://docs.rs/rustyface/badge.svg)](https://docs.rs/rustyface)
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
+
 # Why using this?
 RustyFace does not require installing additional dependencies such as `git` or `git lfs` etc. It aims to be lightweight and portable. 
 In addition to that, RustyFace is friendly to users who live in Mainland China, where HuggingFace accessibility is unstable, as this CLI app adopted a mirror that can be accessed globally.
