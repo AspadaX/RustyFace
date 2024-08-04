@@ -2,7 +2,7 @@
 A command line app for downloading Huggingface repositories with Rust. 
 
 <p align="center">
-  <img src="logo.jpg" alt="RustyFace Logo" />
+  <img src="logo.jpg" alt="RustyFace Logo" width="200"/>
 </p>
 
 [![Crates.io](https://img.shields.io/crates/v/rustyface.svg)](https://crates.io/crates/rustyface)
