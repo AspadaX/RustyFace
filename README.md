@@ -6,9 +6,15 @@ A command line app for downloading Huggingface repositories with Rust.
 </p>
 
 <p align="center">
-	[![Crates.io](https://img.shields.io/crates/v/rustyface.svg)](https://crates.io/crates/rustyface)
-	[![Documentation](https://docs.rs/rustyface/badge.svg)](https://docs.rs/rustyface)
-	[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
+  <a href="https://crates.io/crates/rustyface">
+    <img src="https://img.shields.io/crates/v/rustyface.svg" alt="Crates.io">
+  </a>
+  <a href="https://docs.rs/rustyface">
+    <img src="https://docs.rs/rustyface/badge.svg" alt="Documentation">
+  </a>
+  <a href="https://opensource.org/licenses/MIT">
+    <img src="https://img.shields.io/badge/License-MIT-yellow.svg" alt="License: MIT">
+  </a>
 </p>
 
 # Why using this?
