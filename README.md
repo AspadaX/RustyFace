@@ -9,9 +9,6 @@ A command line app for downloading Huggingface repositories with Rust.
   <a href="https://crates.io/crates/rustyface">
     <img src="https://img.shields.io/crates/v/rustyface.svg" alt="Crates.io">
   </a>
-  <a href="https://docs.rs/rustyface">
-    <img src="https://docs.rs/rustyface/badge.svg" alt="Documentation">
-  </a>
   <a href="https://opensource.org/licenses/MIT">
     <img src="https://img.shields.io/badge/License-MIT-yellow.svg" alt="License: MIT">
   </a>
