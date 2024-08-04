@@ -1,6 +1,10 @@
 # RustyFace
 A command line app for downloading Huggingface repositories with Rust. 
 
+<p align="center">
+  <img src="logo.jpg" alt="RustyFace Logo" />
+</p>
+
 [![Crates.io](https://img.shields.io/crates/v/rustyface.svg)](https://crates.io/crates/rustyface)
 [![Documentation](https://docs.rs/rustyface/badge.svg)](https://docs.rs/rustyface)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
