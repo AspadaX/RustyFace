@@ -6,16 +6,21 @@ A command line app for downloading Huggingface repositories with Rust.
 </p>
 
 <p align="center">
-	[![Crates.io](https://img.shields.io/crates/v/rustyface.svg)](https://crates.io/crates/rustyface)
-	[![Documentation](https://docs.rs/rustyface/badge.svg)](https://docs.rs/rustyface)
-	[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
+  <a href="https://crates.io/crates/rustyface">
+    <img src="https://img.shields.io/crates/v/rustyface.svg" alt="Crates.io">
+  </a>
+  <a href="https://opensource.org/licenses/MIT">
+    <img src="https://img.shields.io/badge/License-MIT-yellow.svg" alt="License: MIT">
+  </a>
 </p>
 
 # Why using this?
 RustyFace does not require installing additional dependencies such as `git` or `git lfs` etc. It aims to be lightweight and portable. 
 In addition to that, RustyFace is friendly to users who live in Mainland China, where HuggingFace accessibility is unstable, as this CLI app adopted a mirror that can be accessed globally.
 
-## How to Install and Use RustyFace
+The mirror site used in this project is `hf-mirror.com`
+
+# How to Install and Use RustyFace
 First, you need to have Rust installed. For those new to Rust, please refer to the [official installation guide](https://doc.rust-lang.org/cargo/getting-started/installation.html).
 
 ## Install Rust
@@ -36,8 +41,8 @@ Try RustyFace out with this simple command line:
 ```
 rustyface --repository sentence-transformers/all-MiniLM-L6-v2 --tasks 4
 ```
--- `--repository` is followed by the `repo_id` of the repository that you want to download from HuggingFace. 
--- `--tasks` is followed by the number of concurrent downloads. For example, 4 means downloading 4 files at once. It is recommended to use a lower number if your network conditions do not support higher concurrency.
+- `--repository` is followed by the `repo_id` of the repository that you want to download from HuggingFace.
+- `--tasks` is followed by the number of concurrent downloads. For example, 4 means downloading 4 files at once. It is recommended to use a lower number if your network conditions do not support higher concurrency.
 
 # Feedback & Further Development
 Any participation is appreciated! Feel free to submit an issue, discussion or pull request. You can find me on WeChat: `baoxinyu2007` or Discord: `https://discord.gg/UYfZeuPy`
