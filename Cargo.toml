@@ -1,6 +1,6 @@
 [package]
 name = "rustyface"
-version = "0.1.0"
+version = "0.1.1"
 authors = ["Xinyu Bao <baoxinyuworks@163.com>"]
 edition = "2021"
 description = "A Huggingface downloading CLI tool written in Rust."

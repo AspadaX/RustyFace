@@ -1,4 +1,5 @@
-use std::io::{BufRead, Write};
+use std::io::{BufRead, Seek, Write};
+use futures_util::StreamExt;
 use glob::glob;
 
 use clap::Parser;
@@ -147,6 +148,54 @@ impl DownloadArguments {
 		return Ok(large_file_information);
     }
     
+    async fn download_single_file_resume(
+        client: &reqwest::Client,
+        url: &String,
+        error: impl std::error::Error,
+        file: &mut std::fs::File,
+        hasher: &mut sha2::Sha256,
+        download_progress: &mut u64,
+        progress_bar: &indicatif::ProgressBar,
+    ) -> Result<(), Box<dyn std::error::Error>> {
+        // get the ending position of the file
+        let start = file.seek(std::io::SeekFrom::End(0))?;
+        debug!(
+           	"Resume from position: {}", &start
+        );
+        
+        // set the start position to where it ended
+        let retry = client
+            .get(url)
+            .header("Range", format!("bytes={}-", start))
+            .send()
+            .await?;
+        
+        let status = retry.status().is_success().clone();
+        
+        // for the purpose of debugging, we print the header
+        let headers = retry.headers().clone();
+        debug!(
+           	"Headers when retrying: {:?}", headers
+        );
+        
+        // streaming logic
+        if status {
+            let mut content = retry
+               	.bytes_stream();
+            
+            while let Some(chunk) = content.next().await {
+            	let chunk = chunk?;
+	            file.write_all(&chunk)?;
+	            hasher.update(&chunk);
+	            
+	            *download_progress += chunk.len() as u64;
+	            progress_bar.set_position(*download_progress);
+            }
+        }
+        
+        return Ok(());
+    }
+	
     /// a single thread for downloading files
     async fn download_single_file(
      	client: reqwest::Client,
@@ -160,11 +209,6 @@ impl DownloadArguments {
 			"Downloading from URL: {}", &url
 		);
 		
-		let response = client
-			.get(&url).send().await?;
-		let total_filesize = response
-			.content_length().ok_or("Failed to get filesize")?;
-		
 		// setup a hasher for verifying sha256
 		let mut hasher = sha2::Sha256::new();	
 		let filename = url.split("/").last().unwrap();
@@ -172,6 +216,24 @@ impl DownloadArguments {
     		.to_string();
 		let output_string = template_string + filename;
 		
+		// initiate the file download request
+		let response = client
+			.get(&url)
+			.send()
+			.await?;
+		let total_filesize = response
+			.content_length().ok_or("Failed to get filesize")?;
+		
+		// construct the eventual filepath,
+		// make this file downloaded to the repository folder
+		let filepath = std::path::Path::new(
+			&repository_local_path
+		).join(filename);
+		
+		// create a file for writing data
+		let mut file = std::fs::File::create(filepath)?;
+		
+		// initiate the progress bar
 		let pb = progress_bar.add(
 			indicatif::ProgressBar::new(total_filesize)
 		);
@@ -181,41 +243,53 @@ impl DownloadArguments {
                	.expect("Error when trying to render a progress bar")
            	.progress_chars("#>-")
 		);
+		let mut download_progress: u64 = 0;
 		
+		// check if the response is okay to perform saving logics
 		if response.status().is_success() {
 			
-			// construct the eventual filepath,
-			// make this file downloaded to the repository folder
-			let filepath = std::path::Path::new(
-				&repository_local_path
-			).join(filename);
-			
-			let mut file = std::fs::File::create(filepath)?;
-			// let content = response.bytes().await?;
-			
-			let mut downloaded: u64 = 0;
 			let mut stream = response
 				.bytes_stream();
 			
-			use futures_util::StreamExt;
 			while let Some(item) = stream.next().await {
-				let chunk = item?;
+				match item {
+					Ok(chunk) => {
+						// write file chunk
+						file.write_all(&chunk)?;
+						
+						// store sha256 of the chunk to the hasher
+						hasher.update(&chunk);
+						
+						download_progress += chunk.len() as u64;
+						pb.set_position(download_progress);
+					},
+					Err(error) => {
+						loop {
+							match DownloadArguments::download_single_file_resume(
+								&client,
+		                        &url,
+		                        &error,
+		                        &mut file,
+		                        &mut hasher,
+		                        &mut download_progress,
+		                        &pb,
+							).await {
+								Ok(_) => break,
+								Err(_) => continue
+							};
+						}
+					}
+				};
 				
-				// write file chunk
-				file.write_all(&chunk)?;
-				
-				// store sha256 of the chunk to the hasher
-				hasher.update(&chunk);
-				
-				downloaded += chunk.len() as u64;
-				pb.set_position(downloaded);
 			}
 			
 		} else {
+			
 			error!(
 				"Failed to download file: {} - Status: {}", 
 				&url, response.status()
 			);
+			
 		}
 		
 		let result_hash = format!("{:x}", hasher.finalize());
