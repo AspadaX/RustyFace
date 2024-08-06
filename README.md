@@ -23,6 +23,15 @@ The mirror site used in this project is `hf-mirror.com`
 # How to Install and Use RustyFace
 First, you need to have Rust installed. For those new to Rust, please refer to the [official installation guide](https://doc.rust-lang.org/cargo/getting-started/installation.html).
 
+## Quickstart
+You don't need to install Rust if you download the corresponding binaries to your platform from the Release section. That way, you can just type this command to download Huggingface repositories:
+```
+rustyface_windows_x86 --repository sentence-transformers/all-MiniLM-L6-v2 --tasks 4
+```
+- `rustyface_windows_x86` is the binary file name that you have downloaded from the Release section. 
+- `--repository` is followed by the `repo_id` of the repository that you want to download from HuggingFace.
+- `--tasks` is followed by the number of concurrent downloads. For example, 4 means downloading 4 files at once. It is recommended to use a lower number if your network conditions do not support higher concurrency.
+
 ## Install Rust
 On Linux and macOS: 
 ```
