@@ -56,6 +56,12 @@ rustyface --repository sentence-transformers/all-MiniLM-L6-v2 --tasks 4
 - `--repository` is followed by the `repo_id` of the repository that you want to download from HuggingFace.
 - `--tasks` is followed by the number of concurrent downloads. For example, 4 means downloading 4 files at once. It is recommended to use a lower number if your network conditions do not support higher concurrency.
 
+In addition to that, if you don't want to use `hf-mirror.com` as the mirror, you could specify your own download url by setting the environment variable `HF_ENDPOINT`. For example, 
+```
+export HF_ENDPOINT="https://hf-mirror.com"
+```
+This will direct any Hugging Face model or dataset downloads to the specified mirror URL instead of the default Hugging Face endpoint.
+
 # Feedback & Further Development
 Any participation is appreciated! Feel free to submit an issue, discussion or pull request. You can find me on WeChat: `baoxinyu2007` or Discord: `https://discord.gg/UYfZeuPy`
 
