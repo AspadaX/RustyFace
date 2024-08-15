@@ -36,8 +36,12 @@ impl DownloadArguments {
 				s.to_string()
 			}
 		}
+		
         // set the url with a base url
-        let mut url = ensure_trailing_slash(option_env!("HF_ENDPOINT").unwrap_or("https://huggingface.co/"));
+        let mut url = ensure_trailing_slash(
+        	option_env!("HF_ENDPOINT")
+         		.unwrap_or("https://hf-mirror.com/")
+        );
         url.push_str(self.repository.as_str());
 
         let path_to_join = std::path::Path::new(&self.repository);
