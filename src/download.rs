@@ -29,9 +29,15 @@ impl DownloadArguments {
 	     	"Attempting to clone the repository: {}",
 			&self.repository
 	    );
-
+		fn ensure_trailing_slash(s: &str) -> String {
+			if !s.ends_with('/') {
+				format!("{}{}", s, '/')
+			} else {
+				s.to_string()
+			}
+		}
         // set the url with a base url
-        let mut url = String::from(option_env!("HF_ENDPOINT").unwrap_or("https://huggingface.co/"));
+        let mut url = ensure_trailing_slash(option_env!("HF_ENDPOINT").unwrap_or("https://huggingface.co/"));
         url.push_str(self.repository.as_str());
 
         let path_to_join = std::path::Path::new(&self.repository);
