@@ -12,7 +12,7 @@ use sha2::Digest;
 #[command(version, about, long_about = None)]
 pub struct DownloadArguments {
 	// below are cli arguments
-    #[arg(short, long)]
+    #[arg(required = true)]
     pub repository: String,
     #[arg(short, long, default_value_t = 4)]
     pub tasks: usize,
