@@ -23,11 +23,11 @@ jobs:
             name: rustyface-Windows-x86_64.zip
             command: both
 
-          - release_for: macOS-x86_64
+          - release_for: macOS-universal
             os: macOS-latest
-            target: x86_64-apple-darwin
-            bin: rustyface_macos_x86
-            name: precious-Darwin-x86_64.tar.gz
+            target: universal-apple-darwin
+            bin: rustyface_macos_universal
+            name: rustyface-Darwin-universal.tar.gz
             command: both
           
           - release_for: Linux-x86_64
@@ -59,8 +59,23 @@ jobs:
           export PKG_CONFIG_PATH=$OPENSSL_DIR/lib/pkgconfig
           echo "OPENSSL_DIR=$OPENSSL_DIR" >> $GITHUB_ENV
           echo "PKG_CONFIG_PATH=$PKG_CONFIG_PATH" >> $GITHUB_ENV  
+     
+      # Build binary for universal macOS target
+      - name: Build macOS universal binary
+        if: matrix.platform.release_for == 'macOS-universal'
+        run: |
+          # Build for both architectures (x86_64 and aarch64)
+          cargo build --release --target x86_64-apple-darwin
+          cargo build --release --target aarch64-apple-darwin
+
+          # Create a universal binary with lipo
+          lipo -create -output target/universal-apple-darwin/release/${{ matrix.platform.bin }} \
+            target/x86_64-apple-darwin/release/${{ matrix.platform.bin }} \
+            target/aarch64-apple-darwin/release/${{ matrix.platform.bin }} 
       
+      # Build binary for other platforms (Windows, Linux, etc.)
       - name: Build binary
+        if: matrix.platform.release_for != 'macOS-universal'
         uses: houseabsolute/actions-rust-cross@v0
         with:
           command: ${{ matrix.platform.command }}
