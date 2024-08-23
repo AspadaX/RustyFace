@@ -53,7 +53,7 @@ jobs:
 
       # Set OpenSSL environment variables on macOS
       - name: Set OpenSSL environment variables on macOS
-        if: matrix.platform.os == 'macOS-latest'
+        if: matrix.platform.os == 'macOS-14'
         run: |
           export OPENSSL_DIR=$(brew --prefix openssl)
           export PKG_CONFIG_PATH=$OPENSSL_DIR/lib/pkgconfig
