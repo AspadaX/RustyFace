@@ -68,17 +68,6 @@ This will direct any Hugging Face model or dataset downloads to the specified mi
 # Feedback & Further Development
 Any participation is appreciated! Feel free to submit an issue, discussion or pull request. You can find me on WeChat: `baoxinyu2007` or Discord: `https://discord.gg/UYfZeuPy`
 
-## Contributors
-
-<!-- ALL-CONTRIBUTORS-LIST:START - Do not remove or modify this section -->
-<!-- prettier-ignore-start -->
-<!-- markdownlint-disable -->
-
-<!-- markdownlint-restore -->
-<!-- prettier-ignore-end -->
-
-<!-- ALL-CONTRIBUTORS-LIST:END -->
-
 # License
 This project is licensed under the MIT License. See the LICENSE file for details.
 
@@ -104,6 +93,9 @@ Thanks goes to these wonderful people ([emoji key](https://allcontributors.org/d
   <tbody>
     <tr>
       <td align="center" valign="top" width="14.28%"><a href="https://github.com/AspadaX"><img src="https://avatars.githubusercontent.com/u/34500975?v=4?s=100" width="100px;" alt="Xinyu Bao"/><br /><sub><b>Xinyu Bao</b></sub></a><br /><a href="#projectManagement-AspadaX" title="Project Management">📆</a></td>
+    </tr>
+    <tr>
+      <td align="center" valign="top" width="14.28%"><a href="https://github.com/asamaayako"><img src="https://avatars.githubusercontent.com/u/52999091?v=4" width="100px;" alt="asamaayako"/><br /><sub><b>asamaayako</b></sub></a><br /><a href="#featureAdded-asamaayako" title="Software Developer">📆</a></td>
     </tr>
   </tbody>
 </table>
