@@ -25,4 +25,4 @@ Cargo.lock
 /target
 .DS_STORE
 sentence-transformers
-.*
+.zed
