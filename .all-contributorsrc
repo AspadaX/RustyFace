@@ -1,0 +1,26 @@
+{
+  "files": [
+    "README.md"
+  ],
+  "imageSize": 100,
+  "commit": false,
+  "commitType": "docs",
+  "commitConvention": "angular",
+  "contributors": [
+    {
+      "login": "AspadaX",
+      "name": "Xinyu Bao",
+      "avatar_url": "https://avatars.githubusercontent.com/u/34500975?v=4",
+      "profile": "https://github.com/AspadaX",
+      "contributions": [
+        "projectManagement"
+      ]
+    }
+  ],
+  "contributorsPerLine": 7,
+  "skipCi": true,
+  "repoType": "github",
+  "repoHost": "https://github.com",
+  "projectName": "RustyFace",
+  "projectOwner": "AspadaX"
+}
