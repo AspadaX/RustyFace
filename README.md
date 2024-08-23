@@ -93,8 +93,6 @@ Thanks goes to these wonderful people ([emoji key](https://allcontributors.org/d
   <tbody>
     <tr>
       <td align="center" valign="top" width="14.28%"><a href="https://github.com/AspadaX"><img src="https://avatars.githubusercontent.com/u/34500975?v=4?s=100" width="100px;" alt="Xinyu Bao"/><br /><sub><b>Xinyu Bao</b></sub></a><br /><a href="#projectManagement-AspadaX" title="Project Management">📆</a></td>
-    </tr>
-    <tr>
       <td align="center" valign="top" width="14.28%"><a href="https://github.com/asamaayako"><img src="https://avatars.githubusercontent.com/u/52999091?v=4" width="100px;" alt="asamaayako"/><br /><sub><b>asamaayako</b></sub></a><br /><a href="#featureAdded-asamaayako" title="Software Developer">📆</a></td>
     </tr>
   </tbody>
