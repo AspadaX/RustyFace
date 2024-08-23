@@ -14,9 +14,6 @@ A command line app for downloading Huggingface repositories with Rust.
   <a href="https://opensource.org/licenses/MIT">
     <img src="https://img.shields.io/badge/License-MIT-yellow.svg" alt="License: MIT">
   </a>
-  <a>
-  	[![All Contributors](https://img.shields.io/badge/all_contributors-2-orange.svg?style=flat-square)](#contributors-)
-  </a>
 </p>
 
 # Why using this?
