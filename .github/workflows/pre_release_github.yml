@@ -49,7 +49,7 @@ jobs:
         if: matrix.platform.os == 'macOS-latest'
         run: |
           brew update
-          brew install openssl
+          brew install openssl --universal
 
       # Set OpenSSL environment variables on macOS
       - name: Set OpenSSL environment variables on macOS
