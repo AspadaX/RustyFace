@@ -1,0 +1,54 @@
+name: Pre-Release for Nightly
+
+on:
+  push:
+    branches: [ "nightly" ]
+  pull_request:
+    branches: [ "nightly" ]
+
+env:
+  CARGO_TERM_COLOR: always
+
+jobs:
+  release:
+    name: Release - ${{ matrix.platform.release_for }}
+    strategy:
+      matrix:
+        platform:
+
+          - release_for: Windows-x86_64
+            os: windows-latest
+            target: x86_64-pc-windows-msvc
+            bin: rustyface_windows_x86.exe
+            name: rustyface-Windows-x86_64.zip
+            command: both
+
+          - release_for: macOS-x86_64
+            os: macOS-latest
+            target: x86_64-apple-darwin
+            bin: rustyface_macos_x86
+            name: precious-Darwin-x86_64.tar.gz
+            command: both
+          
+          - release_for: Linux-x86_64
+            os: ubuntu-22.04
+            target: x86_64-unknown-linux-gnu
+            bin: rustyface_linux_x86
+            name: rustyface_linux_x86.tar.gz
+            command: build
+
+            # more release targets here ...
+
+    runs-on: ${{ matrix.platform.os }}
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+      - name: Build binary
+        uses: houseabsolute/actions-rust-cross@v0
+        with:
+          command: ${{ matrix.platform.command }}
+          target: ${{ matrix.platform.target }}
+          args: "--locked --release"
+          strip: true
+
+    # more packaging stuff goes here ...
