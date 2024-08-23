@@ -43,6 +43,23 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v3
+        
+      # Install OpenSSL on macOS
+      - name: Install OpenSSL on macOS
+        if: matrix.platform.os == 'macOS-latest'
+        run: |
+          brew update
+          brew install openssl
+
+      # Set OpenSSL environment variables on macOS
+      - name: Set OpenSSL environment variables on macOS
+        if: matrix.platform.os == 'macOS-latest'
+        run: |
+          export OPENSSL_DIR=$(brew --prefix openssl)
+          export PKG_CONFIG_PATH=$OPENSSL_DIR/lib/pkgconfig
+          echo "OPENSSL_DIR=$OPENSSL_DIR" >> $GITHUB_ENV
+          echo "PKG_CONFIG_PATH=$PKG_CONFIG_PATH" >> $GITHUB_ENV  
+      
       - name: Build binary
         uses: houseabsolute/actions-rust-cross@v0
         with:
