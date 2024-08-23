@@ -24,7 +24,7 @@ jobs:
             command: both
 
           - release_for: macOS-universal
-            os: macOS-latest
+            os: macOS-14.0
             target: universal-apple-darwin
             bin: rustyface_macos_universal
             name: rustyface-Darwin-universal.tar.gz
