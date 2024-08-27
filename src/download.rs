@@ -3,12 +3,12 @@ use futures_util::StreamExt;
 use glob::glob;
 
 use clap::Parser;
-use git2::{build::RepoBuilder, Repository};
+use git2::{build::RepoBuilder, Cred, FetchOptions, RemoteCallbacks, Repository};
 use log::{info, warn, error, debug};
 use indicatif;
 use sha2::Digest;
 
-#[derive(Parser, Debug)]
+#[derive(Parser, Debug, Clone)]
 #[command(version, about, long_about = None)]
 pub struct DownloadArguments {
 	// below are cli arguments
@@ -23,22 +23,16 @@ pub struct DownloadArguments {
 }
 
 impl DownloadArguments {
+	
     pub fn clone_repository(&mut self) -> Result<Repository, Box<dyn std::error::Error>> {
 
    		info!(
 	     	"Attempting to clone the repository: {}",
 			&self.repository
 	    );
-		fn ensure_trailing_slash(s: &str) -> String {
-			if !s.ends_with('/') {
-				format!("{}{}", s, '/')
-			} else {
-				s.to_string()
-			}
-		}
 		
         // set the url with a base url
-        let mut url = ensure_trailing_slash(
+        let mut url = DownloadArguments::ensure_trailing_slash(
         	option_env!("HF_ENDPOINT")
          		.unwrap_or("https://hf-mirror.com/")
         );
@@ -66,8 +60,8 @@ impl DownloadArguments {
 	          	.to_string_lossy()
 	           	.to_string()
 	    );
-
-        // clone the repository to the specified directory
+        
+        // return the repository instance for future usages
         return Ok(repository);
     }
     
@@ -110,6 +104,17 @@ impl DownloadArguments {
        
        	return Ok(lfs_files);
     }
+    
+    /// a fn to ensure the string is trailed with a slash. 
+    /// TODO: consider moving this to a separate utils file for sharing. 
+    /// **FOR READABILITY, NEVER PUT A FN DIRECTLY INTO ANOTHER**
+    fn ensure_trailing_slash(s: &str) -> String {
+		if !s.ends_with('/') {
+			format!("{}{}", s, '/')
+		} else {
+			s.to_string()
+		}
+	} 
 
     pub fn extract_lfs_urls(
     	&self,

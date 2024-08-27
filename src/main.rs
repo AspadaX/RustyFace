@@ -17,11 +17,6 @@ async fn main() -> Result<(), Box<dyn std::error::Error>> {
 	);
 
     let mut arguments = download::DownloadArguments::parse();
-    // let mut arguments = download::DownloadArguments {
-    // 	repository: "sentence-transformers/all-MiniLM-L6-v2".to_string(),
-    //  	repository_local_path: None,
-    //   	tasks: 4
-    // };
     
     info!(
     	"Concurrency is sat to: {}", &arguments.tasks
