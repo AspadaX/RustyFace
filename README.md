@@ -32,7 +32,7 @@ rustyface_windows_x86 --repository sentence-transformers/all-MiniLM-L6-v2 --task
 - `--repository` is followed by the `repo_id` of the repository that you want to download from HuggingFace.
 - `--tasks` is followed by the number of concurrent downloads. For example, 4 means downloading 4 files at once. It is recommended to use a lower number if your network conditions do not support higher concurrency.
 
-## Quickstart - With Installtion
+## Quickstart - With Installation
 If you would like to reuse the program, it is recommended to install RustyFace onto your system rather than using the binaries. Here is how you can do it. 
 
 ### Install Rust
@@ -55,6 +55,42 @@ rustyface --repository sentence-transformers/all-MiniLM-L6-v2 --tasks 4
 ```
 - `--repository` is followed by the `repo_id` of the repository that you want to download from HuggingFace.
 - `--tasks` is followed by the number of concurrent downloads. For example, 4 means downloading 4 files at once. It is recommended to use a lower number if your network conditions do not support higher concurrency.
+
+## Installation Scripts
+RustyFace comes with three shell scripts to help you manage the installation:
+
+### setup.sh
+This script provides a guided installation process for RustyFace:
+```
+chmod +x setup.sh
+./setup.sh
+```
+
+The script offers two installation options:
+1. **Install from source** - Requires the Rust toolchain and will either use the current directory (if it's the RustyFace repository), clone the repository, or install from crates.io
+2. **Install from prebuilt binary** - Downloads and installs the appropriate binary for your platform
+
+### update.sh
+This script updates an existing RustyFace installation to the latest version:
+```
+chmod +x update.sh
+./update.sh
+```
+
+The script offers two update options:
+1. **Update from cargo** - Updates using `cargo install rustyface --force`
+2. **Update from prebuilt binary** - Downloads and installs the latest binary for your platform
+
+### uninstall.sh
+This script removes RustyFace from your system:
+```
+chmod +x uninstall.sh
+./uninstall.sh
+```
+
+The script will:
+1. Find and remove the RustyFace binary from common installation locations
+2. If RustyFace was installed via cargo, run `cargo uninstall rustyface`
 
 # Feedback & Further Development
 Any participation is appreciated! Feel free to submit an issue, discussion or pull request. You can find me on WeChat: `baoxinyu2007` or Discord: `https://discord.gg/UYfZeuPy`
