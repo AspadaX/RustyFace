@@ -21,10 +21,39 @@ In addition to that, RustyFace is friendly to users who live in Mainland China, 
 The mirror site used in this project is `hf-mirror.com`
 
 # How to Install and Use RustyFace
-First, you need to have Rust installed. For those new to Rust, please refer to the [official installation guide](https://doc.rust-lang.org/cargo/getting-started/installation.html).
 
-## Quickstart - Without Installation
-You don't need to install Rust if you download the corresponding binaries to your platform from the Release section. That way, you can just type this command to download Huggingface repositories:
+## Quick Installation (Recommended)
+The easiest way to install RustyFace is using our installation script that automatically downloads the latest binary for your platform:
+
+### One-line Installation
+```bash
+curl -sSL https://raw.githubusercontent.com/AspadaX/RustyFace/main/setup.sh | bash
+```
+
+Or download and run the script manually:
+```bash
+wget https://raw.githubusercontent.com/AspadaX/RustyFace/main/setup.sh
+chmod +x setup.sh
+./setup.sh
+```
+
+### Management Scripts
+After installation, you can manage RustyFace using these scripts:
+
+**Update to latest version:**
+```bash
+curl -sSL https://raw.githubusercontent.com/AspadaX/RustyFace/main/update.sh | bash
+```
+
+**Uninstall RustyFace:**
+```bash
+curl -sSL https://raw.githubusercontent.com/AspadaX/RustyFace/main/uninstall.sh | bash
+```
+
+## Alternative Installation Methods
+
+### Manual Binary Download
+You can download the corresponding binaries for your platform from the [Release section](https://github.com/AspadaX/RustyFace/releases). That way, you can just type this command to download Huggingface repositories:
 ```
 rustyface_windows_x86 --repository sentence-transformers/all-MiniLM-L6-v2 --tasks 4
 ```
@@ -32,18 +61,18 @@ rustyface_windows_x86 --repository sentence-transformers/all-MiniLM-L6-v2 --task
 - `--repository` is followed by the `repo_id` of the repository that you want to download from HuggingFace.
 - `--tasks` is followed by the number of concurrent downloads. For example, 4 means downloading 4 files at once. It is recommended to use a lower number if your network conditions do not support higher concurrency.
 
-## Quickstart - With Installation
-If you would like to reuse the program, it is recommended to install RustyFace onto your system rather than using the binaries. Here is how you can do it. 
+### Installation via Cargo
+If you would like to build from source, you need to have Rust installed. For those new to Rust, please refer to the [official installation guide](https://doc.rust-lang.org/cargo/getting-started/installation.html).
 
-### Install Rust
+#### Install Rust
 On Linux and macOS: 
 ```
 curl https://sh.rustup.rs -sSf | sh
 ```
 On Windows, you can download the installation executable via this link: https://win.rustup.rs/
 
-### Install RustyFace
-After done installing Rust, just type this to your terminal:
+#### Install RustyFace
+After installing Rust, just type this to your terminal:
 ```
 cargo install rustyface
 ```

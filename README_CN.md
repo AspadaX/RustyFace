@@ -21,10 +21,39 @@ RustyFace不需要安装额外的依赖，如`git`或`git lfs`等。它旨在轻
 本项目使用的镜像站点是`hf-mirror.com`
 
 # 如何安装和使用RustyFace
-首先，您需要安装Rust。对于Rust新手，请参考[官方安装指南](https://doc.rust-lang.org/cargo/getting-started/installation.html)。
 
-## 快速入门 - 无需安装
-如果您从Release部分下载了对应平台的二进制文件，则无需安装Rust。这样，您只需输入以下命令即可下载Huggingface仓库：
+## 快速安装（推荐）
+安装RustyFace最简单的方法是使用我们的安装脚本，它会自动为您的平台下载最新的二进制文件：
+
+### 一键安装
+```bash
+curl -sSL https://raw.githubusercontent.com/AspadaX/RustyFace/main/setup.sh | bash
+```
+
+或者手动下载并运行脚本：
+```bash
+wget https://raw.githubusercontent.com/AspadaX/RustyFace/main/setup.sh
+chmod +x setup.sh
+./setup.sh
+```
+
+### 管理脚本
+安装后，您可以使用这些脚本来管理RustyFace：
+
+**更新到最新版本：**
+```bash
+curl -sSL https://raw.githubusercontent.com/AspadaX/RustyFace/main/update.sh | bash
+```
+
+**卸载RustyFace：**
+```bash
+curl -sSL https://raw.githubusercontent.com/AspadaX/RustyFace/main/uninstall.sh | bash
+```
+
+## 其他安装方法
+
+### 手动下载二进制文件
+您可以从[Release部分](https://github.com/AspadaX/RustyFace/releases)下载对应平台的二进制文件。这样，您只需输入以下命令即可下载Huggingface仓库：
 ```
 rustyface_windows_x86 --repository sentence-transformers/all-MiniLM-L6-v2 --tasks 4
 ```
@@ -32,17 +61,17 @@ rustyface_windows_x86 --repository sentence-transformers/all-MiniLM-L6-v2 --task
 - `--repository`后跟您想从HuggingFace下载的仓库的`repo_id`。
 - `--tasks`后跟并发下载数量。例如，4表示同时下载4个文件。如果您的网络条件不支持较高的并发性，建议使用较低的数值。
 
-## 快速入门 - 安装后使用
-如果您想重复使用该程序，建议将RustyFace安装到您的系统上，而不是使用二进制文件。以下是安装方法。
+### 通过Cargo安装
+如果您想从源代码构建，需要先安装Rust。对于Rust新手，请参考[官方安装指南](https://doc.rust-lang.org/cargo/getting-started/installation.html)。
 
-### 安装Rust
+#### 安装Rust
 在Linux和macOS上：
 ```
 curl https://sh.rustup.rs -sSf | sh
 ```
 在Windows上，您可以通过此链接下载安装程序：https://win.rustup.rs/
 
-### 安装RustyFace
+#### 安装RustyFace
 安装Rust后，只需在终端中输入：
 ```
 cargo install rustyface
