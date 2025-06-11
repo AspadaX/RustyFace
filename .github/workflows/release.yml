@@ -7,8 +7,7 @@ on:
     branches: [main]
 env:
   CRATE_NAME: rustyface
-  # GITHUB_TOKEN: ${{ github.token }}
-  GITHUB_TOKEN: ${{ secrets.PERSONAL_ACCESS_TOKEN }}
+  GITHUB_TOKEN: ${{ github.token }}
   RUST_BACKTRACE: 1
 jobs:
   test-matrix:
