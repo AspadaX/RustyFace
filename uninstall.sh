@@ -16,6 +16,23 @@ NC='\033[0m' # No Color
 BINARY_NAME="rustyface"
 INSTALL_DIR="$HOME/.local/bin"
 
+# Function to check shell compatibility
+check_shell_compatibility() {
+    # Check for required commands
+    local missing_commands=""
+    for cmd in grep sed; do
+        if ! command -v "$cmd" >/dev/null 2>&1; then
+            missing_commands="$missing_commands $cmd"
+        fi
+    done
+    
+    if [ -n "$missing_commands" ]; then
+        print_message $RED "Error: Missing required commands:$missing_commands"
+        print_message $RED "Please install these commands and try again"
+        exit 1
+    fi
+}
+
 # Function to print colored output
 print_message() {
     local color=$1
@@ -70,9 +87,13 @@ remove_from_system() {
 clean_path_entries() {
     local shell_files=(
         "$HOME/.bashrc"
-        "$HOME/.bash_profile"
+        "$HOME/.bash_profile" 
         "$HOME/.zshrc"
         "$HOME/.profile"
+        "$HOME/.config/fish/config.fish"
+        "$HOME/.cshrc"
+        "$HOME/.tcshrc"
+        "$HOME/.kshrc"
     )
     
     local cleaned=false
@@ -84,9 +105,15 @@ clean_path_entries() {
             
             # Remove RustyFace-related PATH entries
             if grep -q "Added by RustyFace installer" "$file" 2>/dev/null; then
-                # Remove the comment line and the export line
-                sed -i '/# Added by RustyFace installer/d' "$file" 2>/dev/null || true
-                sed -i "\|export PATH=.*$INSTALL_DIR|d" "$file" 2>/dev/null || true
+                # Remove the comment line and the export/setenv/fish_add_path line
+                sed -i.bak '/# Added by RustyFace installer/d' "$file" 2>/dev/null || true
+                sed -i.bak "\|export PATH=.*$INSTALL_DIR|d" "$file" 2>/dev/null || true
+                sed -i.bak "\|setenv PATH.*$INSTALL_DIR|d" "$file" 2>/dev/null || true
+                sed -i.bak "\|fish_add_path.*$INSTALL_DIR|d" "$file" 2>/dev/null || true
+                
+                # Remove the .bak file created by sed on some systems
+                [ -f "${file}.bak" ] && rm -f "${file}.bak"
+                
                 print_message $GREEN "Cleaned PATH entries from $file"
                 cleaned=true
             fi
@@ -95,7 +122,7 @@ clean_path_entries() {
     
     if $cleaned; then
         print_message $YELLOW "Shell configuration files have been backed up with timestamp suffix"
-        print_message $YELLOW "Please restart your terminal or reload your shell configuration"
+        print_message $YELLOW "Changes will take effect when you restart your terminal or reload your shell configuration"
     fi
     
     return $cleaned
@@ -118,6 +145,9 @@ check_cargo_installation() {
 main() {
     print_message $BLUE "🗑️  RustyFace Uninstaller"
     print_message $BLUE "========================"
+    
+    # Check shell compatibility first
+    check_shell_compatibility
     
     # Check if RustyFace is installed
     if ! command -v rustyface >/dev/null 2>&1; then

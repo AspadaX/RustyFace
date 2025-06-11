@@ -17,11 +17,131 @@ REPO="AspadaX/RustyFace"
 BINARY_NAME="rustyface"
 INSTALL_DIR="$HOME/.local/bin"
 
+# Function to check shell compatibility
+check_shell_compatibility() {
+    # Check for required commands
+    local missing_commands=""
+    for cmd in curl wget grep sed sort; do
+        if ! command -v "$cmd" >/dev/null 2>&1; then
+            if [ "$cmd" = "curl" ] || [ "$cmd" = "wget" ]; then
+                continue  # We only need one of curl or wget
+            else
+                missing_commands="$missing_commands $cmd"
+            fi
+        fi
+    done
+    
+    if [ -n "$missing_commands" ]; then
+        print_message $RED "Error: Missing required commands:$missing_commands"
+        print_message $RED "Please install these commands and try again"
+        exit 1
+    fi
+}
+
 # Function to print colored output
 print_message() {
     local color=$1
     local message=$2
     echo -e "${color}${message}${NC}"
+}
+
+# Function to detect shell and get appropriate RC file
+detect_shell() {
+    local current_shell=""
+    local shell_rc=""
+    
+    # Method 1: Check the user's default shell from SHELL environment variable first
+    # This is more reliable than checking version variables when script is run via curl|bash
+    case "$SHELL" in
+        */zsh)
+            current_shell="zsh"
+            shell_rc="$HOME/.zshrc"
+            ;;
+        */bash)
+            current_shell="bash"
+            # On macOS, prefer .bash_profile over .bashrc
+            if [[ "$OSTYPE" == "darwin"* ]]; then
+                shell_rc="$HOME/.bash_profile"
+            else
+                shell_rc="$HOME/.bashrc"
+                [ -f "$HOME/.bash_profile" ] && shell_rc="$HOME/.bash_profile"
+            fi
+            ;;
+        */fish)
+            current_shell="fish"
+            shell_rc="$HOME/.config/fish/config.fish"
+            ;;
+        */tcsh|*/csh)
+            current_shell="csh"
+            shell_rc="$HOME/.cshrc"
+            ;;
+        */ksh)
+            current_shell="ksh"
+            shell_rc="$HOME/.kshrc"
+            ;;
+        *)
+            # Method 2: Fallback to checking shell-specific environment variables
+            if [ -n "$ZSH_VERSION" ]; then
+                current_shell="zsh"
+                shell_rc="$HOME/.zshrc"
+            elif [ -n "$BASH_VERSION" ]; then
+                current_shell="bash"
+                if [[ "$OSTYPE" == "darwin"* ]]; then
+                    shell_rc="$HOME/.bash_profile"
+                else
+                    shell_rc="$HOME/.bashrc"
+                    [ -f "$HOME/.bash_profile" ] && shell_rc="$HOME/.bash_profile"
+                fi
+            else
+                # Method 3: Try to detect from parent process
+                local parent_shell=""
+                if command -v ps >/dev/null 2>&1; then
+                    parent_shell=$(ps -p $PPID -o comm= 2>/dev/null | tr -d ' ' || echo "")
+                fi
+                
+                case "$parent_shell" in
+                    *zsh*)
+                        current_shell="zsh"
+                        shell_rc="$HOME/.zshrc"
+                        ;;
+                    *bash*)
+                        current_shell="bash"
+                        if [[ "$OSTYPE" == "darwin"* ]]; then
+                            shell_rc="$HOME/.bash_profile"
+                        else
+                            shell_rc="$HOME/.bashrc"
+                            [ -f "$HOME/.bash_profile" ] && shell_rc="$HOME/.bash_profile"
+                        fi
+                        ;;
+                    *fish*)
+                        current_shell="fish"
+                        shell_rc="$HOME/.config/fish/config.fish"
+                        ;;
+                    *)
+                        # Method 4: Default fallback - check which shell RC files exist
+                        if [ -f "$HOME/.zshrc" ]; then
+                            current_shell="zsh"
+                            shell_rc="$HOME/.zshrc"
+                        elif [ -f "$HOME/.bash_profile" ] && [[ "$OSTYPE" == "darwin"* ]]; then
+                            current_shell="bash"
+                            shell_rc="$HOME/.bash_profile"
+                        elif [ -f "$HOME/.bashrc" ]; then
+                            current_shell="bash"
+                            shell_rc="$HOME/.bashrc"
+                        elif [ -f "$HOME/.config/fish/config.fish" ]; then
+                            current_shell="fish"
+                            shell_rc="$HOME/.config/fish/config.fish"
+                        else
+                            current_shell="unknown"
+                            shell_rc="$HOME/.profile"
+                        fi
+                        ;;
+                esac
+            fi
+            ;;
+    esac
+    
+    echo "$current_shell:$shell_rc"
 }
 
 # Function to detect OS and architecture
@@ -127,6 +247,15 @@ update_binary() {
     if command -v rustyface >/dev/null 2>&1; then
         current_location=$(command -v rustyface)
         print_message $BLUE "Found existing installation at: $current_location"
+        
+        # Check if it's a symlink and resolve it
+        if [ -L "$current_location" ]; then
+            local real_location=$(readlink -f "$current_location" 2>/dev/null || readlink "$current_location" 2>/dev/null || echo "$current_location")
+            if [ "$real_location" != "$current_location" ]; then
+                print_message $BLUE "Binary is a symlink to: $real_location"
+                current_location="$real_location"
+            fi
+        fi
     else
         current_location="$INSTALL_DIR/$BINARY_NAME"
         mkdir -p "$INSTALL_DIR"
@@ -166,6 +295,9 @@ handle_cargo_update() {
 main() {
     print_message $BLUE "🔄 RustyFace Update Script"
     print_message $BLUE "=========================="
+    
+    # Check shell compatibility first
+    check_shell_compatibility
     
     # Check if curl or wget is available
     if ! command -v curl >/dev/null 2>&1 && ! command -v wget >/dev/null 2>&1; then
