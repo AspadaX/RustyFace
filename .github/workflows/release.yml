@@ -144,7 +144,7 @@ jobs:
             "--release"
         if: ${{ !matrix.platform.skip-tests }}
       - name: Publish artifacts and release
-        uses: houseabsolute/actions-rust-release@v0
+        uses: AspadaX/actions-rust-release@v0
         with:
           executable-name: rustyface
           target: ${{ matrix.platform.target }}
