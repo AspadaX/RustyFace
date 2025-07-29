@@ -25,13 +25,6 @@ pub struct DownloadArguments {
 impl DownloadArguments {
     pub fn clone_repository(&mut self) -> Result<Repository, Box<dyn std::error::Error>> {
         info!("Attempting to clone the repository: {}", &self.repository);
-        fn ensure_trailing_slash(s: &str) -> String {
-            if !s.ends_with('/') {
-                format!("{}{}", s, '/')
-            } else {
-                s.to_string()
-            }
-        }
 
         // set the url with a base url
         let mut url =
@@ -84,9 +77,10 @@ impl DownloadArguments {
                         match entry {
                             Ok(result) => {
                                 lfs_files.push(
-                                    result.strip_prefix(
-                                        self.repository_local_path.clone().unwrap()
-                                    )?.to_string_lossy().to_string()
+                                    result
+                                        .strip_prefix(self.repository_local_path.clone().unwrap())?
+                                        .to_string_lossy()
+                                        .to_string(),
                                 );
                                 debug!("LFS filepath extracted: {:?}", result);
                             }
@@ -137,9 +131,7 @@ impl DownloadArguments {
                 );
                 debug!("Constructed URL: {}", &url);
 
-                large_file_information.push(
-                    LargeFileInformation::new(url, oid)
-                );
+                large_file_information.push(LargeFileInformation::new(url, oid));
             } else {
                 debug!("OID not found in pointer file: {}", lfs_file);
             }
@@ -360,9 +352,14 @@ pub struct LargeFileInformation {
 
 impl LargeFileInformation {
     fn new(url: String, sha256: String) -> Self {
-        return LargeFileInformation {
-            url: url,
-            sha256: sha256,
-        };
+        return LargeFileInformation { url, sha256 };
+    }
+}
+
+pub fn ensure_trailing_slash(s: &str) -> String {
+    if !s.ends_with('/') {
+        format!("{}{}", s, '/')
+    } else {
+        s.to_string()
     }
 }

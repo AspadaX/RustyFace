@@ -1,4 +1,5 @@
 use clap::Parser;
+use download::ensure_trailing_slash;
 use log::{debug, error, info};
 
 mod download;
@@ -46,7 +47,9 @@ async fn main() -> Result<(), Box<dyn std::error::Error>> {
                 Ok(lfs_files) => match arguments.extract_lfs_urls(
                     &result.path().parent().unwrap().to_path_buf(),
                     lfs_files,
-                    &"https://hf-mirror.com".to_string(),
+                    &ensure_trailing_slash(
+                        option_env!("HF_ENDPOINT").unwrap_or("https://hf-mirror.com/"),
+                    ),
                 ) {
                     Ok(large_file_information) => {
                         arguments.download_files(large_file_information).await?
