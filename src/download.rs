@@ -8,6 +8,8 @@ use indicatif;
 use log::{debug, error, info, warn};
 use sha2::Digest;
 
+use crate::constants::{BASE_URL_ENV_VAR, DEFAULT_BASE_URL};
+
 #[derive(Parser, Debug)]
 #[command(version, about, long_about = None)]
 pub struct DownloadArguments {
@@ -27,8 +29,9 @@ impl DownloadArguments {
         info!("Attempting to clone the repository: {}", &self.repository);
 
         // set the url with a base url
-        let mut url =
-            ensure_trailing_slash(option_env!("HF_ENDPOINT").unwrap_or("https://hf-mirror.com/"));
+        let mut url: String = ensure_trailing_slash(
+            &std::env::var(BASE_URL_ENV_VAR).unwrap_or(DEFAULT_BASE_URL.to_string()),
+        );
         url.push_str(self.repository.as_str());
 
         let path_to_join = std::path::Path::new(&self.repository);
