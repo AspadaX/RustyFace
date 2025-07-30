@@ -85,6 +85,13 @@ rustyface --repository sentence-transformers/all-MiniLM-L6-v2 --tasks 4
 - `--repository` is followed by the `repo_id` of the repository that you want to download from HuggingFace.
 - `--tasks` is followed by the number of concurrent downloads. For example, 4 means downloading 4 files at once. It is recommended to use a lower number if your network conditions do not support higher concurrency.
 
+# Configurations
+
+If you would like to use an alternative mirror, or the HuggingFace official base url, you may configure your env like below:
+
+```bash
+export HF_ENDPOINT=https://your-endpoint.com
+```
 
 # Feedback & Further Development
 Any participation is appreciated! Feel free to submit an issue, discussion or pull request. You can find me on WeChat: `baoxinyu2007` or Discord: `https://discord.gg/UYfZeuPy`
